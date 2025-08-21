@@ -11,6 +11,7 @@ app = FastAPI(title="Todo Backend", version="1.0.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "to-do-list-roan-two-38.vercel.app",
         "https://to-do-list-g0mlbq8md-ansh21000-2097s-projects.vercel.app",
         # optionally: add your localhost for testing
         "http://localhost:5173",
