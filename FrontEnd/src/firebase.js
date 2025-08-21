@@ -1,8 +1,14 @@
 // src/firebase.js
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  setPersistence,
+  browserLocalPersistence
+} from "firebase/auth";
 
-// paste your firebaseConfig here 👇
 const firebaseConfig = {
   apiKey: "AIzaSyDr9uBnxKfOUe9ANHqyQUG7aq49uSiyh_s",
   authDomain: "todo-app-a73bb.firebaseapp.com",
@@ -13,12 +19,15 @@ const firebaseConfig = {
   measurementId: "G-SF0GLF0REK"
 };
 
-// init
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+
+// ✅ Force persistence to localStorage
+setPersistence(auth, browserLocalPersistence);
+
+// Google provider
 const provider = new GoogleAuthProvider();
-provider.setCustomParameters({
-  prompt: "select_account"   // 👈 forces account selection
-});
+provider.setCustomParameters({ prompt: "select_account" });
 
 export { auth, provider, signInWithPopup, signOut };

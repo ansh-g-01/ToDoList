@@ -1,10 +1,15 @@
+import { getAuth } from "firebase/auth";
+
 const BASE_URL = "https://whatsyourtodoo.onrender.com";
 
 export async function callSecure(path, method = "GET", body) {
-  const { getAuth } = await import("firebase/auth");
-  const token = await getAuth().currentUser?.getIdToken();
+  const auth = getAuth();
+  const user = auth.currentUser;
 
-  if (!token) throw new Error("User not logged in");
+  if (!user) throw new Error("User not logged in");
+
+  // ✅ Always get a fresh token
+  const token = await user.getIdToken(/* forceRefresh = false */);
 
   const headers = {
     "Content-Type": "application/json",
@@ -22,10 +27,5 @@ export async function callSecure(path, method = "GET", body) {
   if (res.status === 204) return null;
 
   const contentType = res.headers.get("content-type");
-  if (contentType && contentType.includes("application/json")) {
-    return res.json();
-  }
-
-  return res.text();
+  return contentType?.includes("application/json") ? res.json() : res.text();
 }
-  
