@@ -1,6 +1,6 @@
-// api.js - handles secure requests to FastAPI backend using Firebase token
+const BASE_URL = "https://whatsyourtodoo.onrender.com";
+
 export async function callSecure(path, method = "GET", body) {
-  // Dynamically import Firebase auth
   const { getAuth } = await import("firebase/auth");
   const token = await getAuth().currentUser?.getIdToken();
 
@@ -11,7 +11,7 @@ export async function callSecure(path, method = "GET", body) {
     Authorization: `Bearer ${token}`,
   };
 
-  const res = await fetch(`http://127.0.0.1:5000${path}`, {
+  const res = await fetch(`${BASE_URL}${path}`, {
     method,
     headers,
     body: body ? JSON.stringify(body) : undefined,
@@ -19,15 +19,13 @@ export async function callSecure(path, method = "GET", body) {
 
   if (!res.ok) throw new Error(`API ${method} ${path} failed: ${res.status}`);
 
-  // ✅ Handle no content (204) safely
   if (res.status === 204) return null;
 
-  // ✅ Check if response has JSON
   const contentType = res.headers.get("content-type");
   if (contentType && contentType.includes("application/json")) {
     return res.json();
   }
 
-  // Otherwise return text
   return res.text();
 }
+  

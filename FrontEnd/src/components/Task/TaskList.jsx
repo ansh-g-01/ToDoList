@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { callSecure } from "../../api";
-import TaskItem from "./TaskItem";
+import TaskItem from "./Taskitem";
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([]);
