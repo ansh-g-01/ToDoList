@@ -10,7 +10,11 @@ app = FastAPI(title="Todo Backend", version="1.0.0")
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.FRONTEND_ORIGIN],
+    allow_origins= allow_origins=[
+        "https://to-do-list-g0mlbq8md-ansh21000-2097s-projects.vercel.app",
+        # optionally: add your localhost for testing
+        "http://localhost:5173",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
